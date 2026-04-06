@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyHub — Virtual Study Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* ═══════════════════════════════════════════
+     RESET & ROOT VARIABLES
+  ═══════════════════════════════════════════ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:      #08080f;
+    --surface: #0f0f1a;
+    --card:    #141420;
+    --card2:   #1a1a28;
+    --border:  rgba(255,255,255,0.07);
+    --border2: rgba(255,255,255,0.13);
+    --accent:  #7B68FF;
+    --accent2: #a594ff;
+    --glow:    rgba(123,104,255,0.28);
+    --text:    #f0effe;
+    --muted:   #8888aa;
+    --green:   #22c55e;
+    --amber:   #f59e0b;
+    --red:     #ef4444;
+    --pink:    #f472b6;
+    --cyan:    #22d3ee;
+    --r:       14px;
+    --r2:      20px;
+    --nav-h:   64px;
+  }
+
+  html  { scroll-behavior: smooth; }
+  body  {
+    font-family: 'Space Grotesk', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ═══════════════════════════════════════════
+     SCROLLBAR
+  ═══════════════════════════════════════════ */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.09); border-radius: 3px; }
+
+  /* ═══════════════════════════════════════════
+     KEYFRAMES
+  ═══════════════════════════════════════════ */
+  @keyframes pulse    { 0%,100%{opacity:1} 50%{opacity:.35} }
+  @keyframes fadeUp   { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes slideIn  { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes typingB  { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-5px)} }
+  @keyframes conv     { to{stroke-dashoffset:-22} }
+  @keyframes flicker  { 0%,100%{opacity:1} 50%{opacity:.8} }
+  @keyframes barGrow  { from{transform:scaleY(0)} to{transform:scaleY(1)} }
+  @keyframes spin     { to{transform:rotate(360deg)} }
+
+  /* ═══════════════════════════════════════════
+     NAV
+  ═══════════════════════════════════════════ */
+  nav {
+    position: sticky; top: 0; z-index: 200;
+    height: var(--nav-h);
+    background: rgba(8,8,15,0.82);
+    backdrop-filter: blur(22px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 56px;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 19px; font-weight: 700; text-decoration: none;
+  }
+  .nav-logo-text {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .nav-links { display: flex; align-items: center; gap: 4px; }
+  .nav-link {
+    padding: 7px 14px; border-radius: 8px; font-size: 13px; font-weight: 500;
+    color: var(--muted); cursor: pointer; border: none; background: none;
+    text-decoration: none; transition: all .2s;
+  }
+  .nav-link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+  .nav-cta {
+    padding: 8px 20px; border-radius: 10px; background: var(--accent);
+    color: #fff; font-size: 13px; font-weight: 600; cursor: pointer;
+    border: none; text-decoration: none; transition: all .2s;
+  }
+  .nav-cta:hover { background: var(--accent2); transform: translateY(-1px); box-shadow: 0 6px 28px var(--glow); }
+
+  /* ═══════════════════════════════════════════
+     HERO
+  ═══════════════════════════════════════════ */
+  .hero {
+    padding: 108px 56px 88px;
+    text-align: center; position: relative; overflow: hidden;
+  }
+  .hero-orb {
+    position: absolute; top: -150px; left: 50%; transform: translateX(-50%);
+    width: 800px; height: 800px;
+    background: radial-gradient(circle, rgba(123,104,255,.13) 0%, transparent 68%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 7px;
+    padding: 6px 18px; border-radius: 100px;
+    background: rgba(123,104,255,.1); border: 1px solid rgba(123,104,255,.3);
+    font-size: 12px; font-weight: 600; color: var(--accent2);
+    margin-bottom: 30px; letter-spacing: .05em;
+    animation: fadeUp .6s ease both;
+  }
+  .badge-dot { width:6px; height:6px; border-radius:50%; background:var(--green); animation:pulse 2s ease infinite; }
+  .hero-h1 {
+    font-size: clamp(46px, 7.5vw, 80px); font-weight: 700;
+    line-height: 1.07; letter-spacing: -2.5px; margin-bottom: 22px;
+    animation: fadeUp .7s .1s ease both;
+  }
+  .hero-gradient {
+    background: linear-gradient(135deg, var(--accent) 0%, #ff79c6 50%, var(--accent2) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero-sub {
+    max-width: 560px; margin: 0 auto 44px;
+    font-size: 17px; color: var(--muted); line-height: 1.75;
+    animation: fadeUp .7s .2s ease both;
+  }
+  .hero-btns {
+    display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-bottom: 64px;
+    animation: fadeUp .7s .3s ease both;
+  }
+  .btn-lg {
+    padding: 14px 30px; border-radius: 12px; font-size: 15px; font-weight: 600;
+    cursor: pointer; border: none; transition: all .2s;
+    display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--accent2); transform: translateY(-2px); box-shadow: 0 10px 36px var(--glow); }
+  .btn-outline { background: transparent; color: var(--text); border: 1px solid var(--border2); }
+  .btn-outline:hover { background: rgba(255,255,255,0.05); transform: translateY(-1px); }
+  .hero-stats {
+    display: inline-flex; background: var(--card); border: 1px solid var(--border);
+    border-radius: 18px; overflow: hidden;
+    animation: fadeUp .7s .4s ease both;
+  }
+  .hero-stat { padding: 20px 32px; text-align: center; }
+  .hero-stat + .hero-stat { border-left: 1px solid var(--border); }
+  .hero-stat-val { display:block; font-size:26px; font-weight:700; font-family:'Space Mono',monospace; }
+  .hero-stat-key { display:block; font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.09em; margin-top:3px; }
+
+  /* ═══════════════════════════════════════════
+     SECTION SHARED
+  ═══════════════════════════════════════════ */
+  section { padding: 88px 56px; }
+  .surface { background: var(--surface); }
+  .chip {
+    font-size: 11px; font-weight: 700; letter-spacing: .13em;
+    text-transform: uppercase; color: var(--accent2); margin-bottom: 12px;
+  }
+  .sec-title {
+    font-size: clamp(30px, 4.5vw, 46px); font-weight: 700;
+    letter-spacing: -1.2px; margin-bottom: 14px;
+  }
+  .sec-sub { font-size: 16px; color: var(--muted); max-width: 520px; line-height: 1.75; }
+
+  /* ═══════════════════════════════════════════
+     FEATURES GRID
+  ═══════════════════════════════════════════ */
+  .features-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 16px; margin-top: 52px;
+  }
+  .feat-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: var(--r2); padding: 30px;
+    transition: all .3s; cursor: default;
+  }
+  .feat-card:hover { border-color: rgba(123,104,255,.38); transform: translateY(-5px); box-shadow: 0 20px 56px rgba(0,0,0,.35); }
+  .feat-icon {
+    width: 48px; height: 48px; border-radius: 13px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 21px; margin-bottom: 18px;
+  }
+  .feat-title { font-size: 16px; font-weight: 600; margin-bottom: 9px; }
+  .feat-desc  { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+  /* ═══════════════════════════════════════════
+     DASHBOARD MOCKUP
+  ═══════════════════════════════════════════ */
+  .mockup-wrap {
+    margin-top: 56px; background: var(--surface);
+    border: 1px solid var(--border); border-radius: var(--r2); overflow: hidden;
+  }
+  .mockup-bar {
+    height: 44px; background: rgba(255,255,255,.02); border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; padding: 0 20px; gap: 8px;
+  }
+  .dot { width:10px; height:10px; border-radius:50%; }
+  .dot-r{background:#ff5f57} .dot-y{background:#febc2e} .dot-g{background:#28c840}
+  .mockup-url { font-size: 12px; color: var(--muted); margin-left: 14px; }
+  .mockup-inner { display: grid; grid-template-columns: 200px 1fr; min-height: 460px; }
+  .m-sidebar {
+    background: var(--card); border-right: 1px solid var(--border);
+    padding: 20px 12px; display: flex; flex-direction: column; gap: 4px;
+  }
+  .m-logo { display:flex; align-items:center; gap:8px; padding:8px 12px; margin-bottom:12px; font-size:16px; font-weight:700; }
+  .m-logo-text {
+    background: linear-gradient(135deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+  }
+  .m-nav {
+    padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 500;
+    color: var(--muted); display: flex; align-items: center; gap: 8px; cursor: pointer; transition: all .15s;
+  }
+  .m-nav:hover, .m-nav.active { background:rgba(123,104,255,.12); color:var(--accent2); }
+  .m-nav.active { border: 1px solid rgba(123,104,255,.22); }
+  .m-dot { width:6px; height:6px; border-radius:50%; }
+  .m-main { padding: 28px; display: flex; flex-direction: column; gap: 22px; }
+  .m-greet { font-size: 18px; font-weight: 600; letter-spacing: -.3px; }
+  .m-sub   { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .m-stats { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+  .m-stat  { background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:16px; }
+  .m-stat-icon { font-size: 17px; margin-bottom: 7px; }
+  .m-stat-val  { font-size: 22px; font-weight: 700; font-family: 'Space Mono',monospace; }
+  .m-stat-lbl  { font-size: 10px; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; margin-top:3px; }
+  .m-charts { display: grid; grid-template-columns: 1fr 190px; gap: 12px; }
+  .m-cc { background:var(--card2); border:1px solid var(--border); border-radius:12px; padding:18px; }
+  .m-cc-title { font-size:11px; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.07em; margin-bottom:14px; }
+  .bars { display:flex; align-items:flex-end; gap:7px; height:90px; }
+  .bar  { flex:1; border-radius:5px 5px 0 0; background:rgba(123,104,255,.35); transform-origin:bottom; animation:barGrow .7s ease both; cursor:default; transition:background .2s; }
+  .bar:hover { background:var(--accent); }
+  .bar.hi  { background:var(--accent); }
+  .bar:nth-child(1){animation-delay:.05s}
+  .bar:nth-child(2){animation-delay:.1s}
+  .bar:nth-child(3){animation-delay:.15s}
+  .bar:nth-child(4){animation-delay:.2s}
+  .bar:nth-child(5){animation-delay:.25s}
+  .bar:nth-child(6){animation-delay:.3s}
+  .bar:nth-child(7){animation-delay:.35s}
+  .donut-wrap { display:flex; align-items:center; justify-content:center; height:90px; }
+  .dl-legend { margin-top:12px; display:flex; flex-direction:column; gap:7px; }
+  .dl-item { display:flex; align-items:center; gap:7px; font-size:11px; color:var(--muted); }
+  .dl-dot  { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+
+  /* ═══════════════════════════════════════════
+     POMODORO SECTION
+  ═══════════════════════════════════════════ */
+  .pomo-layout { display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; margin-top:52px; }
+  .pomo-demo {
+    background:var(--card); border:1px solid var(--border); border-radius:var(--r2);
+    padding:44px; display:flex; flex-direction:column; align-items:center; gap:26px;
+  }
+  .pomo-modes { display:flex; gap:6px; padding:6px; background:var(--card2); border-radius:11px; }
+  .pomo-mode {
+    padding:8px 18px; border-radius:8px; font-size:12px; font-weight:600;
+    cursor:pointer; border:none; background:transparent; color:var(--muted);
+    font-family:'Space Grotesk',sans-serif; transition:all .2s;
+  }
+  .pomo-mode.active { background:var(--accent); color:#fff; }
+  .pomo-controls { display:flex; align-items:center; gap:18px; }
+  .pomo-btn {
+    width:68px; height:68px; border-radius:50%; border:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--accent); color:#fff; font-size:24px; transition:all .2s;
+  }
+  .pomo-btn:hover { transform:scale(1.09); box-shadow:0 10px 36px var(--glow); }
+  .pomo-sm { width:42px; height:42px; font-size:17px; background:var(--card2); border:1px solid var(--border); color:var(--muted); }
+  .pomo-sm:hover { background:var(--card); color:var(--text); transform:scale(1.06); box-shadow:none; }
+  .pomo-dots { display:flex; gap:9px; }
+  .pomo-dot { width:13px; height:13px; border-radius:50%; border:2px solid var(--border); transition:all .3s; }
+  .pomo-dot.done   { background:var(--accent); border-color:var(--accent); }
+  .pomo-dot.active { border-color:var(--accent); animation:pulse 1s ease infinite; }
+  .pomo-feats { display:flex; flex-direction:column; gap:24px; }
+  .pf-row { display:flex; align-items:flex-start; gap:16px; }
+  .pf-icon { width:42px; height:42px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:19px; flex-shrink:0; }
+  .pf-title { font-size:15px; font-weight:600; margin-bottom:5px; }
+  .pf-desc  { font-size:13px; color:var(--muted); line-height:1.6; }
+
+  /* ═══════════════════════════════════════════
+     ROOMS / CHAT SECTION
+  ═══════════════════════════════════════════ */
+  .rooms-layout { display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; margin-top:52px; }
+  .rooms-feats { display:flex; flex-direction:column; gap:24px; }
+  .rf-row  { display:flex; align-items:flex-start; gap:16px; }
+  .rf-icon { width:42px; height:42px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:19px; flex-shrink:0; }
+  .rf-title { font-size:15px; font-weight:600; margin-bottom:5px; }
+  .rf-desc  { font-size:13px; color:var(--muted); line-height:1.6; }
+  .chat-demo { background:var(--card); border:1px solid var(--border); border-radius:var(--r2); overflow:hidden; }
+  .chat-header {
+    padding:16px 20px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; gap:10px;
+  }
+  .chat-live-dot { width:8px; height:8px; border-radius:50%; background:var(--green); animation:pulse 2s ease infinite; }
+  .chat-title  { font-size:14px; font-weight:600; }
+  .chat-online { font-size:11px; color:var(--green); margin-left:auto; }
+  .chat-msgs   { padding:16px; display:flex; flex-direction:column; gap:12px; max-height:290px; overflow-y:auto; }
+  .msg { display:flex; gap:10px; align-items:flex-end; animation:slideIn .3s ease; }
+  .msg.own { flex-direction:row-reverse; }
+  .msg-av {
+    width:29px; height:29px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:10px; font-weight:700; color:#fff;
+  }
+  .msg-body { display:flex; flex-direction:column; gap:3px; }
+  .msg.own .msg-body { align-items:flex-end; }
+  .msg-bubble {
+    padding:10px 14px; border-radius:15px; font-size:13px; line-height:1.5;
+    background:var(--card2); border-bottom-left-radius:4px; max-width:230px; word-break:break-word;
+  }
+  .msg.own .msg-bubble { background:var(--accent); color:#fff; border-bottom-left-radius:15px; border-bottom-right-radius:4px; }
+  .msg-time { font-size:10px; color:var(--muted); padding:0 4px; }
+  .typing-row { display:flex; gap:4px; padding:10px 14px; background:var(--card2); border-radius:15px; width:fit-content; margin-left:39px; }
+  .typing-row span { width:6px; height:6px; border-radius:50%; background:var(--muted); animation:typingB 1.2s ease infinite; }
+  .typing-row span:nth-child(2){animation-delay:.2s}
+  .typing-row span:nth-child(3){animation-delay:.4s}
+  .chat-input-bar {
+    padding:12px 16px; border-top:1px solid var(--border);
+    display:flex; gap:8px; align-items:center;
+  }
+  .chat-inp {
+    flex:1; background:var(--card2); border:1px solid var(--border); border-radius:9px;
+    padding:9px 13px; font-size:13px; color:var(--text); font-family:'Space Grotesk',sans-serif;
+    outline:none; transition:border .2s;
+  }
+  .chat-inp:focus { border-color:rgba(123,104,255,.5); }
+  .chat-inp::placeholder { color:var(--muted); }
+  .chat-send {
+    width:36px; height:36px; border-radius:9px; background:var(--accent); border:none;
+    cursor:pointer; color:#fff; font-size:14px; display:flex; align-items:center; justify-content:center;
+    transition:all .2s;
+  }
+  .chat-send:hover { background:var(--accent2); }
+
+  /* ═══════════════════════════════════════════
+     LEADERBOARD SECTION
+  ═══════════════════════════════════════════ */
+  .lb-layout { display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:start; margin-top:52px; }
+  .lb-demo { background:var(--card); border:1px solid var(--border); border-radius:var(--r2); overflow:hidden; }
+  .lb-tabs-bar { display:flex; border-bottom:1px solid var(--border); padding:0 20px; }
+  .lb-tab {
+    padding:13px 14px; font-size:12px; font-weight:600; color:var(--muted);
+    cursor:pointer; border:none; background:none; border-bottom:2px solid transparent;
+    margin-bottom:-1px; font-family:'Space Grotesk',sans-serif; transition:all .2s;
+  }
+  .lb-tab.active { color:var(--accent2); border-bottom-color:var(--accent); }
+  .lb-row {
+    display:flex; align-items:center; gap:12px; padding:13px 20px;
+    border-bottom:1px solid var(--border); transition:background .15s;
+  }
+  .lb-row:last-child { border-bottom:none; }
+  .lb-row:hover { background:rgba(255,255,255,.02); }
+  .lb-row.me {
+    background:rgba(123,104,255,.07);
+    border:1px solid rgba(123,104,255,.22);
+    margin:4px 10px; border-radius:9px;
+  }
+  .lb-rank { font-size:17px; font-weight:700; width:34px; text-align:center; font-family:'Space Mono',monospace; color:var(--muted); }
+  .lb-av   { width:33px; height:33px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#fff; flex-shrink:0; }
+  .lb-name { flex:1; font-size:13px; font-weight:600; }
+  .lb-val  { font-size:14px; font-weight:700; font-family:'Space Mono',monospace; color:var(--accent2); }
+  .lb-str  { font-size:11px; color:var(--muted); display:flex; align-items:center; gap:3px; min-width:52px; }
+  .me-badge { font-size:10px; background:rgba(123,104,255,.2); color:var(--accent2); padding:2px 9px; border-radius:6px; border:1px solid rgba(123,104,255,.3); margin-left:6px; }
+  .lb-feats { display:flex; flex-direction:column; gap:24px; }
+  .lf-row  { display:flex; align-items:flex-start; gap:16px; }
+  .lf-icon { width:42px; height:42px; border-radius:11px; display:flex; align-items:center; justify-content:center; font-size:19px; flex-shrink:0; }
+  .lf-title { font-size:15px; font-weight:600; margin-bottom:5px; }
+  .lf-desc  { font-size:13px; color:var(--muted); line-height:1.6; }
+
+  /* ═══════════════════════════════════════════
+     TECH STACK
+  ═══════════════════════════════════════════ */
+  .tech-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:13px; margin-top:52px; }
+  .tech-card {
+    background:var(--card); border:1px solid var(--border); border-radius:var(--r);
+    padding:22px 12px; text-align:center; transition:all .25s;
+  }
+  .tech-card:hover { border-color:var(--border2); transform:translateY(-4px); background:var(--card2); }
+  .tech-icon { font-size:30px; margin-bottom:11px; }
+  .tech-name { font-size:13px; font-weight:600; margin-bottom:4px; }
+  .tech-sub  { font-size:11px; color:var(--muted); }
+
+  /* ═══════════════════════════════════════════
+     CTA
+  ═══════════════════════════════════════════ */
+  .cta-wrap { padding: 0 56px 88px; }
+  .cta-box {
+    background: linear-gradient(135deg, rgba(123,104,255,.1), rgba(255,121,198,.07));
+    border: 1px solid rgba(123,104,255,.26); border-radius: var(--r2);
+    padding: 88px; text-align: center;
+  }
+  .cta-title { font-size:clamp(30px,4.5vw,48px); font-weight:700; letter-spacing:-1.2px; margin-bottom:13px; }
+  .cta-sub   { font-size:16px; color:var(--muted); margin-bottom:40px; }
+  .cta-btns  { display:flex; gap:13px; justify-content:center; flex-wrap:wrap; }
+
+  /* ═══════════════════════════════════════════
+     FOOTER
+  ═══════════════════════════════════════════ */
+  footer {
+    padding:34px 56px; border-top:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+    color:var(--muted); font-size:13px;
+  }
+  .footer-logo { font-weight:700; color:var(--text); font-size:15px; }
+  .footer-links { display:flex; gap:22px; }
+  .footer-link { color:var(--muted); text-decoration:none; transition:color .2s; }
+  .footer-link:hover { color:var(--text); }
+
+  /* ═══════════════════════════════════════════
+     RESPONSIVE
+  ═══════════════════════════════════════════ */
+  @media(max-width:1024px) {
+    .features-grid { grid-template-columns:repeat(2,1fr); }
+    .m-charts { grid-template-columns:1fr; }
+    .m-stats  { grid-template-columns:repeat(2,1fr); }
+  }
+  @media(max-width:900px) {
+    nav { padding:0 24px; }
+    .nav-links { display:none; }
+    .hero, section { padding:64px 24px; }
+    .hero-stats { flex-direction:column; }
+    .hero-stat + .hero-stat { border-left:none; border-top:1px solid var(--border); }
+    .mockup-inner { grid-template-columns:1fr; }
+    .m-sidebar { display:none; }
+    .pomo-layout, .rooms-layout, .lb-layout { grid-template-columns:1fr; }
+    .tech-grid { grid-template-columns:repeat(3,1fr); }
+    .cta-wrap { padding:0 24px 64px; }
+    .cta-box  { padding:48px 24px; }
+    footer { flex-direction:column; gap:18px; text-align:center; }
+  }
+  @media(max-width:600px) {
+    .features-grid { grid-template-columns:1fr; }
+    .tech-grid     { grid-template-columns:repeat(2,1fr); }
+    .hero-btns     { flex-direction:column; align-items:center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     NAV
+══════════════════════════════════════════ -->
+<nav>
+  <a class="nav-logo" href="#">
+    <span>📚</span>
+    <span class="nav-logo-text">StudyHub</span>
+  </a>
+  <div class="nav-links">
+    <a class="nav-link" href="#features">Features</a>
+    <a class="nav-link" href="#dashboard">Dashboard</a>
+    <a class="nav-link" href="#pomodoro">Pomodoro</a>
+    <a class="nav-link" href="#rooms">Rooms</a>
+    <a class="nav-link" href="#leaderboard">Leaderboard</a>
+    <a class="nav-link" href="#stack">Stack</a>
+  </div>
+  <a class="nav-cta" href="#cta">Get Started →</a>
+</nav>
+
+<!-- ══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════ -->
+<div class="hero" id="home">
+  <div class="hero-orb"></div>
+  <div class="hero-badge">
+    <div class="badge-dot"></div>
+    Live · Real-time collaboration · Full-stack
+  </div>
+  <h1 class="hero-h1">Study smarter,<br><span class="hero-gradient">together.</span></h1>
+  <p class="hero-sub">
+    A full-stack virtual study platform with live rooms, Pomodoro timers,
+    resource sharing, and productivity analytics — built on React, Node.js, MongoDB, and Socket.io.
+  </p>
+  <div class="hero-btns">
+    <a href="#cta"      class="btn-lg btn-primary">Start studying free →</a>
+    <a href="#features" class="btn-lg btn-outline">Explore features</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="hero-stat-val">∞</span>
+      <span class="hero-stat-key">Study rooms</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-val">25:00</span>
+      <span class="hero-stat-key">Focus sessions</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-val">🔥</span>
+      <span class="hero-stat-key">Streak tracking</span>
+    </div>
+    <div class="hero-stat">
+      <span class="hero-stat-val">JWT</span>
+      <span class="hero-stat-key">Secure auth</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     FEATURES
+══════════════════════════════════════════ -->
+<section class="surface" id="features">
+  <div class="chip">Features</div>
+  <h2 class="sec-title">Everything you need to focus</h2>
+  <p class="sec-sub">Purpose-built tools for students who want more than just a timer.</p>
+  <div class="features-grid">
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(123,104,255,.14);color:var(--accent)">🏠</div>
+      <div class="feat-title">Live Study Rooms</div>
+      <div class="feat-desc">Create or join rooms by subject. Real-time chat powered by Socket.io with typing indicators, presence detection, and system events.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(245,158,11,.14);color:var(--amber)">⏱</div>
+      <div class="feat-title">Pomodoro Timer</div>
+      <div class="feat-desc">Configurable focus and break intervals with an audio bell. Sync your timer with the entire room for group focus sessions in real time.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(34,197,94,.14);color:var(--green)">📊</div>
+      <div class="feat-title">Analytics Dashboard</div>
+      <div class="feat-desc">Visual bar and doughnut charts via Chart.js for daily hours, subject distribution, and weekly goal progress with a ring indicator.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(34,211,238,.14);color:var(--cyan)">📝</div>
+      <div class="feat-title">Notes & Resources</div>
+      <div class="feat-desc">Upload files with Multer, share links, write notes. Public or private. Like and bookmark resources from other students in your rooms.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(239,68,68,.14);color:var(--red)">🏆</div>
+      <div class="feat-title">Leaderboards</div>
+      <div class="feat-desc">Weekly and all-time rankings by study time, session count, and streak length. Gold/silver/bronze podium with a full scrollable table.</div>
+    </div>
+    <div class="feat-card">
+      <div class="feat-icon" style="background:rgba(244,114,182,.14);color:var(--pink)">🔐</div>
+      <div class="feat-title">Secure Auth</div>
+      <div class="feat-desc">JWT tokens stored in localStorage, bcrypt password hashing at salt 12, protected routes, and auto-logout on token expiry.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     DASHBOARD MOCKUP
+══════════════════════════════════════════ -->
+<section id="dashboard">
+  <div class="chip">Dashboard</div>
+  <h2 class="sec-title">Your productivity at a glance</h2>
+  <p class="sec-sub">Interactive charts, streak counters, session logs, and weekly goal tracking — all in one view.</p>
+  <div class="mockup-wrap">
+    <div class="mockup-bar">
+      <div class="dot dot-r"></div>
+      <div class="dot dot-y"></div>
+      <div class="dot dot-g"></div>
+      <span class="mockup-url">localhost:3000/dashboard</span>
+    </div>
+    <div class="mockup-inner">
+      <!-- Sidebar -->
+      <div class="m-sidebar">
+        <div class="m-logo">
+          <span>📚</span>
+          <span class="m-logo-text">StudyHub</span>
+        </div>
+        <div class="m-nav active"><div class="m-dot" style="background:var(--accent)"></div>Dashboard</div>
+        <div class="m-nav"><div class="m-dot" style="background:var(--muted)"></div>Study Rooms</div>
+        <div class="m-nav"><div class="m-dot" style="background:var(--muted)"></div>Pomodoro</div>
+        <div class="m-nav"><div class="m-dot" style="background:var(--muted)"></div>Notes</div>
+        <div class="m-nav"><div class="m-dot" style="background:var(--muted)"></div>Leaderboard</div>
+        <div class="m-nav" style="margin-top:auto"><div class="m-dot" style="background:var(--muted)"></div>Profile</div>
+      </div>
+      <!-- Main -->
+      <div class="m-main">
+        <div>
+          <div class="m-greet">Good evening, Alex 👋</div>
+          <div class="m-sub">You've studied 34.2 hours total · 🔴 Session in progress</div>
+        </div>
+        <div class="m-stats">
+          <div class="m-stat">
+            <div class="m-stat-icon">⏱</div>
+            <div class="m-stat-val" style="color:var(--accent)">34.2h</div>
+            <div class="m-stat-lbl">Total Time</div>
+          </div>
+          <div class="m-stat">
+            <div class="m-stat-icon">📚</div>
+            <div class="m-stat-val" style="color:var(--green)">48</div>
+            <div class="m-stat-lbl">Sessions</div>
+          </div>
+          <div class="m-stat">
+            <div class="m-stat-icon">🔥</div>
+            <div class="m-stat-val" style="color:var(--amber)">12</div>
+            <div class="m-stat-lbl">Day Streak</div>
+          </div>
+          <div class="m-stat">
+            <div class="m-stat-icon">🏆</div>
+            <div class="m-stat-val" style="color:var(--pink)">6</div>
+            <div class="m-stat-lbl">Badges</div>
+          </div>
+        </div>
+        <div class="m-charts">
+          <div class="m-cc">
+            <div class="m-cc-title">Study hours · last 7 days</div>
+            <div class="bars">
+              <div class="bar" style="height:42%"></div>
+              <div class="bar" style="height:62%"></div>
+              <div class="bar" style="height:34%"></div>
+              <div class="bar hi" style="height:88%"></div>
+              <div class="bar" style="height:55%"></div>
+              <div class="bar" style="height:72%"></div>
+              <div class="bar" style="height:46%"></div>
+            </div>
+          </div>
+          <div class="m-cc">
+            <div class="m-cc-title">By subject</div>
+            <div class="donut-wrap">
+              <svg width="84" height="84" viewBox="0 0 84 84">
+                <circle cx="42" cy="42" r="30" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="14"/>
+                <circle cx="42" cy="42" r="30" fill="none" stroke="var(--accent)" stroke-width="14"
+                  stroke-dasharray="75 113" stroke-dashoffset="15" transform="rotate(-90 42 42)"/>
+                <circle cx="42" cy="42" r="30" fill="none" stroke="var(--green)" stroke-width="14"
+                  stroke-dasharray="45 143" stroke-dashoffset="-60" transform="rotate(-90 42 42)"/>
+                <circle cx="42" cy="42" r="30" fill="none" stroke="var(--amber)" stroke-width="14"
+                  stroke-dasharray="38 150" stroke-dashoffset="-105" transform="rotate(-90 42 42)"/>
+              </svg>
+            </div>
+            <div class="dl-legend">
+              <div class="dl-item"><div class="dl-dot" style="background:var(--accent)"></div>Programming</div>
+              <div class="dl-item"><div class="dl-dot" style="background:var(--green)"></div>Math</div>
+              <div class="dl-item"><div class="dl-dot" style="background:var(--amber)"></div>Science</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     POMODORO
+══════════════════════════════════════════ -->
+<section class="surface" id="pomodoro">
+  <div class="chip">Focus Timer</div>
+  <h2 class="sec-title">Stay in flow, together</h2>
+  <p class="sec-sub">The Pomodoro technique meets real-time sync. Start a group timer and your whole room focuses at once.</p>
+  <div class="pomo-layout">
+    <!-- Live Demo -->
+    <div class="pomo-demo">
+      <div class="pomo-modes">
+        <button class="pomo-mode active" onclick="setMode('focus',25)">🎯 Focus</button>
+        <button class="pomo-mode" onclick="setMode('short',5)">☕ Short</button>
+        <button class="pomo-mode" onclick="setMode('long',15)">🌊 Long</button>
+      </div>
+      <!-- SVG Ring -->
+      <svg id="pomo-ring-svg" width="210" height="210" viewBox="0 0 210 210" style="cursor:pointer" onclick="togglePomo()">
+        <circle cx="105" cy="105" r="85" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="13"/>
+        <circle id="pomoRing" cx="105" cy="105" r="85" fill="none" stroke="var(--accent)" stroke-width="13"
+          stroke-linecap="round"
+          stroke-dasharray="534" stroke-dashoffset="0"
+          transform="rotate(-90 105 105)"
+          style="transition:stroke-dashoffset 1s linear,stroke .5s;filter:drop-shadow(0 0 9px rgba(123,104,255,.55))"/>
+        <text id="pomoTime" x="105" y="98" text-anchor="middle" fill="#f0effe"
+          font-size="40" font-weight="700" font-family="'Space Mono',monospace">25:00</text>
+        <text id="pomoLabel" x="105" y="124" text-anchor="middle" fill="#8888aa" font-size="14"
+          font-family="'Space Grotesk',sans-serif">🎯 Focus</text>
+      </svg>
+      <!-- Controls -->
+      <div class="pomo-controls">
+        <button class="pomo-btn pomo-sm" onclick="resetPomo()" title="Reset">↺</button>
+        <button class="pomo-btn" id="pomoPlay" onclick="togglePomo()">▶</button>
+        <button class="pomo-btn pomo-sm" onclick="setMode('short',5)" title="Break">☕</button>
+      </div>
+      <!-- Cycle dots -->
+      <div class="pomo-dots" id="pomoDots">
+        <div class="pomo-dot"></div>
+        <div class="pomo-dot"></div>
+        <div class="pomo-dot"></div>
+        <div class="pomo-dot"></div>
+      </div>
+    </div>
+    <!-- Features -->
+    <div class="pomo-feats">
+      <div class="pf-row">
+        <div class="pf-icon" style="background:rgba(123,104,255,.12);color:var(--accent)">🔔</div>
+        <div>
+          <div class="pf-title">Audio bell on completion</div>
+          <div class="pf-desc">A crisp Web Audio API tone signals when to work and when to rest — no need to watch the screen.</div>
+        </div>
+      </div>
+      <div class="pf-row">
+        <div class="pf-icon" style="background:rgba(34,197,94,.12);color:var(--green)">👥</div>
+        <div>
+          <div class="pf-title">Group timer sync via Socket.io</div>
+          <div class="pf-desc">Broadcast your timer state to every member of your study room — focus and break together in real time.</div>
+        </div>
+      </div>
+      <div class="pf-row">
+        <div class="pf-icon" style="background:rgba(245,158,11,.12);color:var(--amber)">📈</div>
+        <div>
+          <div class="pf-title">Sessions saved to MongoDB</div>
+          <div class="pf-desc">Every completed session is logged with duration, subject, Pomodoro count, and self-rated productivity score.</div>
+        </div>
+      </div>
+      <div class="pf-row">
+        <div class="pf-icon" style="background:rgba(34,211,238,.12);color:var(--cyan)">⚙️</div>
+        <div>
+          <div class="pf-title">Fully configurable intervals</div>
+          <div class="pf-desc">Set your own work, short break, and long break durations. Preferences are stored in your user profile.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     ROOMS / CHAT
+══════════════════════════════════════════ -->
+<section id="rooms">
+  <div class="chip">Study Rooms</div>
+  <h2 class="sec-title">Never study alone again</h2>
+  <p class="sec-sub">Join a live room, chat in real time, and stay accountable with people who share your goals.</p>
+  <div class="rooms-layout">
+    <!-- Features -->
+    <div class="rooms-feats">
+      <div class="rf-row">
+        <div class="rf-icon" style="background:rgba(123,104,255,.12);color:var(--accent)">🌍</div>
+        <div>
+          <div class="rf-title">Browse by subject</div>
+          <div class="rf-desc">Filter rooms by Mathematics, Programming, Science, Languages, Business, and more. Jump into a live session instantly.</div>
+        </div>
+      </div>
+      <div class="rf-row">
+        <div class="rf-icon" style="background:rgba(244,114,182,.12);color:var(--pink)">💬</div>
+        <div>
+          <div class="rf-title">Real-time chat with Socket.io</div>
+          <div class="rf-desc">Live messaging with typing indicators, system join/leave events, and scrollable chat history stored in MongoDB.</div>
+        </div>
+      </div>
+      <div class="rf-row">
+        <div class="rf-icon" style="background:rgba(34,197,94,.12);color:var(--green)">👁</div>
+        <div>
+          <div class="rf-title">Live presence detection</div>
+          <div class="rf-desc">Active user counts update in real time as students enter and leave. Green dot shows who is currently online.</div>
+        </div>
+      </div>
+      <div class="rf-row">
+        <div class="rf-icon" style="background:rgba(245,158,11,.12);color:var(--amber)">🔒</div>
+        <div>
+          <div class="rf-title">Public or private rooms</div>
+          <div class="rf-desc">Public rooms appear in the browser with subject filters. Private rooms are invite-only — ideal for study groups.</div>
+        </div>
+      </div>
+    </div>
+    <!-- Chat Demo -->
+    <div class="chat-demo">
+      <div class="chat-header">
+        <div class="chat-live-dot"></div>
+        <div>
+          <div class="chat-title">CS101 Study Group</div>
+          <div style="font-size:11px;color:var(--muted)">Programming</div>
+        </div>
+        <div class="chat-online" id="onlineCount">4 online</div>
+      </div>
+      <div class="chat-msgs" id="chatMsgs">
+        <div class="msg">
+          <div class="msg-av" style="background:#7B68FF">AX</div>
+          <div class="msg-body">
+            <div class="msg-bubble">Hey everyone, ready to tackle arrays? 🚀</div>
+            <div class="msg-time">2:14 PM</div>
+          </div>
+        </div>
+        <div class="msg own">
+          <div class="msg-av" style="background:#22c55e">ME</div>
+          <div class="msg-body">
+            <div class="msg-bubble">Yes! Working on binary search 🔍</div>
+            <div class="msg-time">2:14 PM</div>
+          </div>
+        </div>
+        <div class="msg">
+          <div class="msg-av" style="background:#f472b6">MK</div>
+          <div class="msg-body">
+            <div class="msg-bubble">Can someone explain O(log n)?</div>
+            <div class="msg-time">2:15 PM</div>
+          </div>
+        </div>
+        <div class="msg">
+          <div class="msg-av" style="background:#f59e0b">RJ</div>
+          <div class="msg-body">
+            <div class="msg-bubble">Each step halves the search space — so it's logarithmic time!</div>
+            <div class="msg-time">2:15 PM</div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-bar">
+        <input class="chat-inp" id="chatInp" placeholder="Type a message..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+        <button class="chat-send" onclick="sendMsg()">➤</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     LEADERBOARD
+══════════════════════════════════════════ -->
+<section class="surface" id="leaderboard">
+  <div class="chip">Leaderboard</div>
+  <h2 class="sec-title">Healthy competition, real results</h2>
+  <p class="sec-sub">Weekly and all-time rankings motivate you to keep your streak alive and climb the charts.</p>
+  <div class="lb-layout">
+    <!-- Demo -->
+    <div class="lb-demo">
+      <div class="lb-tabs-bar">
+        <button class="lb-tab active" onclick="setLbTab(this)">📅 This week</button>
+        <button class="lb-tab" onclick="setLbTab(this)">⏱ All time</button>
+        <button class="lb-tab" onclick="setLbTab(this)">🔥 Streaks</button>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank">🥇</div>
+        <div class="lb-av" style="background:linear-gradient(135deg,#FFD700,#FFA500)">SK</div>
+        <div class="lb-name">studyking</div>
+        <div class="lb-val">18.4h</div>
+        <div class="lb-str">🔥 21d</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank">🥈</div>
+        <div class="lb-av" style="background:#7B68FF">AX</div>
+        <div class="lb-name">alexlearn</div>
+        <div class="lb-val">15.1h</div>
+        <div class="lb-str">🔥 14d</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank">🥉</div>
+        <div class="lb-av" style="background:#f472b6">MK</div>
+        <div class="lb-name">mathkid</div>
+        <div class="lb-val">12.8h</div>
+        <div class="lb-str">🔥 9d</div>
+      </div>
+      <div class="lb-row">
+        <div class="lb-rank" style="color:var(--muted);font-size:14px">4</div>
+        <div class="lb-av" style="background:#22d3ee">RJ</div>
+        <div class="lb-name">rjcodes</div>
+        <div class="lb-val">11.2h</div>
+        <div class="lb-str">🔥 7d</div>
+      </div>
+      <div class="lb-row me">
+        <div class="lb-rank" style="color:var(--accent2);font-size:14px">5</div>
+        <div class="lb-av" style="background:linear-gradient(135deg,var(--accent),var(--pink))">ME</div>
+        <div class="lb-name">You<span class="me-badge">you</span></div>
+        <div class="lb-val" style="color:var(--accent)">9.7h</div>
+        <div class="lb-str">🔥 5d</div>
+      </div>
+    </div>
+    <!-- Features -->
+    <div class="lb-feats">
+      <div class="lf-row">
+        <div class="lf-icon" style="background:rgba(245,158,11,.12);color:var(--amber)">🎖</div>
+        <div>
+          <div class="lf-title">Automatic badge system</div>
+          <div class="lf-desc">Badges awarded for milestones: first session, 10 sessions, 50 sessions, 7-day streak, 30-day streak, 10 hours studied.</div>
+        </div>
+      </div>
+      <div class="lf-row">
+        <div class="lf-icon" style="background:rgba(239,68,68,.12);color:var(--red)">🔥</div>
+        <div>
+          <div class="lf-title">Daily streak tracking</div>
+          <div class="lf-desc">Study at least once a day to maintain your streak. Miss a day and it resets — so consistency is rewarded.</div>
+        </div>
+      </div>
+      <div class="lf-row">
+        <div class="lf-icon" style="background:rgba(34,197,94,.12);color:var(--green)">📅</div>
+        <div>
+          <div class="lf-title">Four ranking categories</div>
+          <div class="lf-desc">Compare on weekly time, all-time hours, session count, or current streak. Find your edge and track your rank.</div>
+        </div>
+      </div>
+      <div class="lf-row">
+        <div class="lf-icon" style="background:rgba(123,104,255,.12);color:var(--accent)">🥇</div>
+        <div>
+          <div class="lf-title">Gold, silver, bronze podium</div>
+          <div class="lf-desc">Top 3 students get a full podium display with animated rank badges. Full table shows positions 4 and below.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     TECH STACK
+══════════════════════════════════════════ -->
+<section id="stack">
+  <div class="chip">Tech Stack</div>
+  <h2 class="sec-title">Modern tools, clean architecture</h2>
+  <p class="sec-sub">Every layer from auth to analytics built from scratch — ideal for academic submissions and technical interviews.</p>
+  <div class="tech-grid">
+    <div class="tech-card"><div class="tech-icon">⚛️</div><div class="tech-name">React 18</div><div class="tech-sub">UI + Routing v6</div></div>
+    <div class="tech-card"><div class="tech-icon">🟢</div><div class="tech-name">Node.js</div><div class="tech-sub">Server runtime</div></div>
+    <div class="tech-card"><div class="tech-icon">🚂</div><div class="tech-name">Express</div><div class="tech-sub">REST API</div></div>
+    <div class="tech-card"><div class="tech-icon">🍃</div><div class="tech-name">MongoDB</div><div class="tech-sub">NoSQL database</div></div>
+    <div class="tech-card"><div class="tech-icon">🔌</div><div class="tech-name">Socket.io</div><div class="tech-sub">Real-time events</div></div>
+    <div class="tech-card"><div class="tech-icon">🔑</div><div class="tech-name">JWT</div><div class="tech-sub">Auth tokens</div></div>
+    <div class="tech-card"><div class="tech-icon">🔒</div><div class="tech-name">bcrypt</div><div class="tech-sub">Password hashing</div></div>
+    <div class="tech-card"><div class="tech-icon">📦</div><div class="tech-name">Mongoose</div><div class="tech-sub">MongoDB ODM</div></div>
+    <div class="tech-card"><div class="tech-icon">📈</div><div class="tech-name">Chart.js</div><div class="tech-sub">Analytics charts</div></div>
+    <div class="tech-card"><div class="tech-icon">📎</div><div class="tech-name">Multer</div><div class="tech-sub">File uploads</div></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     CTA
+══════════════════════════════════════════ -->
+<div class="cta-wrap" id="cta">
+  <div class="cta-box">
+    <h2 class="cta-title">Ready to level up your studies?</h2>
+    <p class="cta-sub">Free forever · No credit card · Open source · Full-stack demo</p>
+    <div class="cta-btns">
+      <a href="#home" class="btn-lg btn-primary">Get started free →</a>
+      <a href="#features" class="btn-lg btn-outline">View all features</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════ -->
+<footer>
+  <div class="footer-logo">📚 StudyHub</div>
+  <div style="font-size:12px;color:var(--muted)">Built with React · Node.js · MongoDB · Socket.io</div>
+  <div class="footer-links">
+    <a class="footer-link" href="#features">Features</a>
+    <a class="footer-link" href="#pomodoro">Timer</a>
+    <a class="footer-link" href="#rooms">Rooms</a>
+    <a class="footer-link" href="#leaderboard">Leaderboard</a>
+    <a class="footer-link" href="#stack">Stack</a>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════ -->
+<script>
+/* ── POMODORO TIMER ── */
+const CIRC = 2 * Math.PI * 85;   // circumference of r=85 ring
+let pomoRunning = false;
+let pomoTime    = 25 * 60;
+let pomoTotal   = 25 * 60;
+let pomoInterval = null;
+let pomoDone    = 0;
+let currentMode = 'focus';
+
+const ringEl   = document.getElementById('pomoRing');
+const timeEl   = document.getElementById('pomoTime');
+const labelEl  = document.getElementById('pomoLabel');
+const playBtn  = document.getElementById('pomoPlay');
+
+const MODES = {
+  focus: { label: '🎯 Focus',       color: '#7B68FF', shadow: 'rgba(123,104,255,.55)', mins: 25 },
+  short: { label: '☕ Short Break',  color: '#22c55e', shadow: 'rgba(34,197,94,.5)',    mins: 5  },
+  long:  { label: '🌊 Long Break',   color: '#22d3ee', shadow: 'rgba(34,211,238,.5)',   mins: 15 },
+};
+
+function setMode(name, mins) {
+  clearInterval(pomoInterval);
+  pomoRunning = false;
+  playBtn.textContent = '▶';
+  currentMode = name;
+  const m = MODES[name];
+  pomoTotal = mins * 60;
+  pomoTime  = pomoTotal;
+  labelEl.textContent = m.label;
+  ringEl.setAttribute('stroke', m.color);
+  ringEl.style.filter = `drop-shadow(0 0 9px ${m.shadow})`;
+  updatePomoDisplay();
+  document.querySelectorAll('.pomo-mode').forEach((b, i) => {
+    b.classList.toggle('active', ['focus','short','long'][i] === name);
+  });
+}
+
+function updatePomoDisplay() {
+  const m = Math.floor(pomoTime / 60);
+  const s = pomoTime % 60;
+  timeEl.textContent = String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  const pct = pomoTime / pomoTotal;
+  ringEl.setAttribute('stroke-dashoffset', CIRC * (1 - pct));
+}
+
+function togglePomo() {
+  if (pomoRunning) {
+    clearInterval(pomoInterval);
+    pomoRunning = false;
+    playBtn.textContent = '▶';
+  } else {
+    if (pomoTime <= 0) { resetPomo(); return; }
+    pomoRunning = true;
+    playBtn.textContent = '⏸';
+    pomoInterval = setInterval(() => {
+      pomoTime--;
+      updatePomoDisplay();
+      if (pomoTime <= 0) {
+        clearInterval(pomoInterval);
+        pomoRunning = false;
+        playBtn.textContent = '▶';
+        if (currentMode === 'focus') {
+          pomoDone = Math.min(pomoDone + 1, 4);
+          updateDots();
+        }
+        playBell();
+      }
+    }, 1000);
+  }
+}
+
+function resetPomo() {
+  clearInterval(pomoInterval);
+  pomoRunning = false;
+  playBtn.textContent = '▶';
+  pomoTime = pomoTotal;
+  updatePomoDisplay();
+}
+
+function updateDots() {
+  document.querySelectorAll('.pomo-dot').forEach((d, i) => {
+    d.classList.toggle('done',   i < pomoDone);
+    d.classList.toggle('active', i === pomoDone && pomoRunning && currentMode === 'focus');
+  });
+}
+
+function playBell() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.frequency.setValueAtTime(880, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.5);
+    gain.gain.setValueAtTime(0.45, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.2);
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + 1.2);
+  } catch (e) {}
+}
+
+updatePomoDisplay();
+
+/* ── CHAT DEMO ── */
+const botReplies = [
+  { av: 'AX', bg: '#7B68FF', text: "Starting my Pomodoro now — 25 mins of pure focus 🎯" },
+  { av: 'SK', bg: '#22d3ee', text: "Binary search is so elegant 🤌 O(log n) for the win" },
+  { av: 'MK', bg: '#f472b6', text: "Can we go over merge sort after? I keep mixing up the steps" },
+  { av: 'RJ', bg: '#f59e0b', text: "Sure! Divide, conquer, merge. Think of it like shuffling cards in reverse." },
+  { av: 'AX', bg: '#7B68FF', text: "Our room timer just finished — short break time! ☕" },
+  { av: 'SK', bg: '#22d3ee', text: "Anyone got good resources for dynamic programming? 📚" },
+  { av: 'MK', bg: '#f472b6', text: "Check the shared notes section, I uploaded a PDF earlier!" },
+];
+let botIdx = 0;
+
+function nowTime() {
+  const d = new Date();
+  const h = d.getHours(), m = d.getMinutes();
+  return (h % 12 || 12) + ':' + String(m).padStart(2,'0') + ' ' + (h < 12 ? 'AM' : 'PM');
+}
+
+function addMsg(opts) {
+  const container = document.getElementById('chatMsgs');
+  const div = document.createElement('div');
+  div.className = 'msg' + (opts.own ? ' own' : '');
+  div.innerHTML = `
+    <div class="msg-av" style="background:${opts.bg}">${opts.av}</div>
+    <div class="msg-body">
+      <div class="msg-bubble">${opts.text}</div>
+      <div class="msg-time">${nowTime()}</div>
+    </div>`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function addTyping() {
+  const container = document.getElementById('chatMsgs');
+  const div = document.createElement('div');
+  div.id = 'typingIndicator';
+  div.className = 'msg';
+  div.innerHTML = `
+    <div class="msg-av" style="background:${botReplies[botIdx % botReplies.length].bg}">
+      ${botReplies[botIdx % botReplies.length].av}
+    </div>
+    <div class="typing-row">
+      <span></span><span></span><span></span>
+    </div>`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+}
+
+function removeTyping() {
+  const t = document.getElementById('typingIndicator');
+  if (t) t.remove();
+}
+
+function sendMsg() {
+  const inp = document.getElementById('chatInp');
+  const val = inp.value.trim();
+  if (!val) return;
+  addMsg({ own: true, av: 'ME', bg: '#22c55e', text: val });
+  inp.value = '';
+  setTimeout(() => {
+    addTyping();
+    setTimeout(() => {
+      removeTyping();
+      const reply = botReplies[botIdx % botReplies.length];
+      addMsg(reply);
+      botIdx++;
+    }, 1400);
+  }, 600);
+}
+
+/* ── LEADERBOARD TABS ── */
+function setLbTab(el) {
+  document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+/* ── SMOOTH SCROLL ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+  });
+});
+
+/* ── INTERSECTION OBSERVER (fade-in on scroll) ── */
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.feat-card, .tech-card, .pf-row, .rf-row, .lf-row').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(24px)';
+  el.style.transition = 'opacity .55s ease, transform .55s ease';
+  observer.observe(el);
+});
+
+/* ── BARS HOVER RESET ── */
+document.querySelectorAll('.bar').forEach(b => {
+  const isHi = b.classList.contains('hi');
+  b.addEventListener('mouseleave', () => {
+    b.style.background = isHi ? 'var(--accent)' : 'rgba(123,104,255,.35)';
+  });
+});
+</script>
+</body>
+</html>

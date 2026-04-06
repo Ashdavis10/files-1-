@@ -1,0 +1,17 @@
+{
+  "name": "virtual-study-hub",
+  "version": "1.0.0",
+  "description": "Full-stack Virtual Study Hub",
+  "scripts": {
+    "install:all": "npm run install:backend && npm run install:frontend",
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm start",
+    "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "setup": "npm run install:all && echo '✅ Dependencies installed! Run npm run dev to start.'"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

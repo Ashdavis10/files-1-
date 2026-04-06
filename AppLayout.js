@@ -1,0 +1,15 @@
+import React from 'react';
+import Sidebar from './Sidebar';
+
+export default function AppLayout({ children }) {
+  return (
+    <div className="app-layout">
+      <Sidebar />
+      <main className="main-content">
+        <div className="page-wrapper">
+          {children}
+        </div>
+      </main>
+    </div>
+  );
+}
