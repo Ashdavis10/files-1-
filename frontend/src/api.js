@@ -1,5 +1,5 @@
 // Replace with your Render backend URL
-const API_BASE_URL = 'https://your-backend-url.onrender.com';
+const API_BASE_URL = 'https://studyhub-siol.onrender.com';
 
 export const api = {
   // Auth endpoints
