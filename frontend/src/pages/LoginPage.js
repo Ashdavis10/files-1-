@@ -34,6 +34,7 @@ export default function LoginPage() {
       <div className="auth-glow" />
       <div className="auth-card">
         <Link to="/" className="auth-back">← Back to home</Link>
+        <div className="auth-logo">📚</div>
         <h1 className="auth-title">Welcome back</h1>
         <p className="auth-subtitle">Sign in to continue studying</p>
 
@@ -66,6 +67,9 @@ export default function LoginPage() {
               <button type="button" className="input-toggle" onClick={() => setShowPass(p => !p)}>
                 {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
+            </div>
+            <div style={{ textAlign: 'right', marginTop: '4px' }}>
+              <Link to="#" className="text-xs text-muted">Forgot password?</Link>
             </div>
           </div>
 

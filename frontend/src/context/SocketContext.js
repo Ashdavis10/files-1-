@@ -19,7 +19,8 @@ export const SocketProvider = ({ children }) => {
       return;
     }
 
-    const socket = io(process.env.REACT_APP_API_URL || 'http://localhost:5000', {
+    const socketUrl = process.env.REACT_APP_API_URL || 'https://studyhub-siol.onrender.com';
+    const socket = io(socketUrl, {
       auth: { token },
       transports: ['websocket', 'polling'],
       reconnectionAttempts: 5,

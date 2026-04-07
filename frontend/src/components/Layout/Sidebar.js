@@ -32,6 +32,7 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
+        <span className="sidebar-logo-icon">📚</span>
         <span className="sidebar-logo-text">StudyHub</span>
       </div>
 
@@ -71,7 +72,7 @@ export default function Sidebar() {
           <div className="user-info">
             <div className="user-name">{user?.username}</div>
             <div className="user-status">
-              {user?.currentStreak || 0} day streak
+              🔥 {user?.currentStreak || 0} day streak
             </div>
           </div>
         </div>
