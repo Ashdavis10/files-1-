@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
     setToken(data.token);
     setUser(data.user);
     localStorage.setItem('studyhub_user', JSON.stringify(data.user));
-    toast.success(`Welcome to StudyHub, ${data.user.username}! 🎉`);
+    toast.success(`Welcome to StudyHub, ${data.user.username}!`);
     return data;
   }, []);
 
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
     setToken(data.token);
     setUser(data.user);
     localStorage.setItem('studyhub_user', JSON.stringify(data.user));
-    toast.success(`Welcome back, ${data.user.username}! 📚`);
+    toast.success(`Welcome back, ${data.user.username}!`);
     return data;
   }, []);
 

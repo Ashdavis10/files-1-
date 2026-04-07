@@ -34,7 +34,6 @@ export default function LoginPage() {
       <div className="auth-glow" />
       <div className="auth-card">
         <Link to="/" className="auth-back">← Back to home</Link>
-        <div className="auth-logo">📚</div>
         <h1 className="auth-title">Welcome back</h1>
         <p className="auth-subtitle">Sign in to continue studying</p>
 

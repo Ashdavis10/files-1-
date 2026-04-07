@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Users, Timer, BookOpen, Trophy, ArrowRight, Zap, Shield, BarChart3 } from 'lucide-react';
+import { Users, Timer, BookOpen, Trophy, ArrowRight, Zap, Shield, BarChart3, Flame } from 'lucide-react';
 import '../styles/LandingPage.css';
 
 const features = [
@@ -18,7 +18,6 @@ export default function LandingPage() {
       {/* Header */}
       <header className="landing-header">
         <div className="landing-logo">
-          <span>📚</span>
           <span className="logo-text">StudyHub</span>
         </div>
         <div className="landing-nav">
@@ -55,7 +54,7 @@ export default function LandingPage() {
           <div className="hero-stat-divider" />
           <div className="hero-stat"><span className="hero-stat-value">25:00</span><span className="hero-stat-label">Focus sessions</span></div>
           <div className="hero-stat-divider" />
-          <div className="hero-stat"><span className="hero-stat-value">🔥</span><span className="hero-stat-label">Streak tracking</span></div>
+          <div className="hero-stat"><span className="hero-stat-value"><Flame size={28} color="var(--warning)" style={{margin: '0 auto'}}/></span><span className="hero-stat-label">Streak tracking</span></div>
         </div>
       </section>
 

@@ -38,7 +38,6 @@ export default function RegisterPage() {
       <div className="auth-glow" />
       <div className="auth-card">
         <Link to="/" className="auth-back">← Back to home</Link>
-        <div className="auth-logo">📚</div>
         <h1 className="auth-title">Create account</h1>
         <p className="auth-subtitle">Join the study community</p>
 

@@ -32,14 +32,7 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">
-        <span className="sidebar-logo-icon">📚</span>
         <span className="sidebar-logo-text">StudyHub</span>
-        <div style={{ marginLeft: 'auto' }}>
-          {connected
-            ? <Wifi size={14} color="var(--success)" />
-            : <WifiOff size={14} color="var(--danger)" />
-          }
-        </div>
       </div>
 
       <nav className="sidebar-nav">
@@ -78,7 +71,7 @@ export default function Sidebar() {
           <div className="user-info">
             <div className="user-name">{user?.username}</div>
             <div className="user-status">
-              🔥 {user?.currentStreak || 0} day streak
+              {user?.currentStreak || 0} day streak
             </div>
           </div>
         </div>

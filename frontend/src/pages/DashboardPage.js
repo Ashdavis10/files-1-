@@ -69,8 +69,7 @@ export default function DashboardPage() {
     try {
       const { data } = await api.post('/sessions/start', { type: 'solo', subject: 'General' });
       setActiveSession(data.session);
-      localStorage.setItem('active_session', JSON.stringify(data.session));
-      toast.success('Study session started! 📚');
+      toast.success('Study session started!');
     } catch (err) {
       toast.error('Failed to start session');
     }
@@ -85,9 +84,9 @@ export default function DashboardPage() {
       updateUser(data.userStats);
       if (data.newBadges?.length > 0) {
         setNewBadges(data.newBadges);
-        data.newBadges.forEach(b => toast.success(`🏆 Badge earned: ${b.name}!`, { duration: 5000 }));
+        data.newBadges.forEach(b => toast.success(`Badge earned: ${b.name}!`, { duration: 5000 }));
       }
-      toast.success(`Session complete! ${data.session.duration} minutes studied 🎉`);
+      toast.success(`Session complete! ${data.session.duration} minutes studied`);
       loadData();
     } catch (err) {
       toast.error('Failed to end session');
@@ -168,22 +167,22 @@ export default function DashboardPage() {
         {/* Stat cards */}
         <div className="grid-4 mb-4">
           <div className="stat-card">
-            <div className="stat-icon" style={{ background: 'var(--accent-dim)', color: 'var(--accent)' }}>⏱</div>
+            <div className="stat-icon" style={{ background: 'var(--accent-dim)', color: 'var(--accent)' }}><Clock size={20} /></div>
             <div className="stat-value">{studyHours}h</div>
             <div className="stat-label">Total Study Time</div>
           </div>
           <div className="stat-card">
-            <div className="stat-icon" style={{ background: 'var(--success-dim)', color: 'var(--success)' }}>📚</div>
+            <div className="stat-icon" style={{ background: 'var(--success-dim)', color: 'var(--success)' }}><BookOpen size={20} /></div>
             <div className="stat-value">{user?.totalSessions || 0}</div>
             <div className="stat-label">Sessions Completed</div>
           </div>
           <div className="stat-card">
-            <div className="stat-icon" style={{ background: 'var(--warning-dim)', color: 'var(--warning)' }}>🔥</div>
+            <div className="stat-icon" style={{ background: 'var(--warning-dim)', color: 'var(--warning)' }}><Flame size={20} /></div>
             <div className="stat-value">{user?.currentStreak || 0}</div>
             <div className="stat-label">Day Streak</div>
           </div>
           <div className="stat-card">
-            <div className="stat-icon" style={{ background: 'var(--info-dim)', color: 'var(--info)' }}>🏆</div>
+            <div className="stat-icon" style={{ background: 'var(--info-dim)', color: 'var(--info)' }}><Award size={20} /></div>
             <div className="stat-value">{user?.badges?.length || 0}</div>
             <div className="stat-label">Badges Earned</div>
           </div>
@@ -285,14 +284,14 @@ export default function DashboardPage() {
             </div>
             {sessions.length === 0 ? (
               <div className="empty-state" style={{ padding: '40px 0' }}>
-                <div className="empty-state-icon">📖</div>
+                <div className="empty-state-icon"><BookOpen size={36} opacity={0.5} /></div>
                 <p>No sessions yet</p>
               </div>
             ) : (
               <div className="sessions-list">
                 {sessions.map(s => (
                   <div key={s._id} className="session-item">
-                    <div className="session-icon">📚</div>
+                    <div className="session-icon"><BookOpen size={16} /></div>
                     <div className="session-info">
                       <div className="session-subject">{s.subject}</div>
                       <div className="session-meta text-muted text-xs">
@@ -333,9 +332,9 @@ export default function DashboardPage() {
           <h3 className="chart-title mb-4">Quick Actions</h3>
           <div className="grid-3">
             {[
-              { icon: '⏱', label: 'Pomodoro Timer', sub: 'Start a focus session', path: '/pomodoro', color: 'var(--warning)' },
-              { icon: '👥', label: 'Find Study Room', sub: 'Collaborate live', path: '/rooms', color: 'var(--accent)' },
-              { icon: '📝', label: 'Add Notes', sub: 'Share resources', path: '/notes', color: 'var(--success)' },
+              { icon: <Clock size={20} />, label: 'Pomodoro Timer', sub: 'Start a focus session', path: '/pomodoro', color: 'var(--warning)' },
+              { icon: <Users size={20} />, label: 'Find Study Room', sub: 'Collaborate live', path: '/rooms', color: 'var(--accent)' },
+              { icon: <BookOpen size={20} />, label: 'Add Notes', sub: 'Share resources', path: '/notes', color: 'var(--success)' },
             ].map(a => (
               <button key={a.path} className="quick-action-card" onClick={() => navigate(a.path)}>
                 <div className="quick-action-icon" style={{ color: a.color }}>{a.icon}</div>
