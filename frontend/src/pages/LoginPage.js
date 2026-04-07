@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useAuth } from '../context/AuthContext';
 import '../styles/AuthPages.css';
 
 export default function LoginPage() {
@@ -10,29 +11,19 @@ export default function LoginPage() {
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const { login } = useAuth();
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.email || !form.password) return toast.error('Please fill in all fields');
     setLoading(true);
     
     try {
-      const response = await fetch('https://studyhub-siol.onrender.com/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
-      });
-      
-      const data = await response.json();
-      if (data.success) {
-        localStorage.setItem('studyhub_token', data.token);
-        localStorage.setItem('studyhub_user', JSON.stringify(data.user));
-        toast.success('Welcome back to StudyHub!');
-        navigate('/dashboard');
-      } else {
-        toast.error(data.message || 'Login failed');
-      }
+      await login(form.email, form.password);
+      // login function in AuthContext already sets token/user state, syncs localStorage and shows a toast
+      navigate('/dashboard');
     } catch (error) {
-      toast.error('Connection error - please try again');
+      toast.error(error.response?.data?.message || error.message || 'Connection error - please try again');
     }
     
     setLoading(false);

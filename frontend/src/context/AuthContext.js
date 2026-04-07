@@ -41,10 +41,7 @@ export const AuthProvider = ({ children }) => {
       
       // Otherwise fetch from API
       try {
-        const response = await fetch('https://studyhub-siol.onrender.com/api/auth/me', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-        const data = await response.json();
+        const { data } = await api.get('/auth/me');
         if (data.success) {
           setUser(data.user);
           localStorage.setItem('studyhub_user', JSON.stringify(data.user));
@@ -63,6 +60,7 @@ export const AuthProvider = ({ children }) => {
     const { data } = await api.post('/auth/register', { username, email, password });
     setToken(data.token);
     setUser(data.user);
+    localStorage.setItem('studyhub_user', JSON.stringify(data.user));
     toast.success(`Welcome to StudyHub, ${data.user.username}! 🎉`);
     return data;
   }, []);
@@ -71,6 +69,7 @@ export const AuthProvider = ({ children }) => {
     const { data } = await api.post('/auth/login', { email, password });
     setToken(data.token);
     setUser(data.user);
+    localStorage.setItem('studyhub_user', JSON.stringify(data.user));
     toast.success(`Welcome back, ${data.user.username}! 📚`);
     return data;
   }, []);

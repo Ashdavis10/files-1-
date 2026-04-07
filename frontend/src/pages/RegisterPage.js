@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { useAuth } from '../context/AuthContext';
 import '../styles/AuthPages.css';
 
 export default function RegisterPage() {
@@ -9,6 +10,8 @@ export default function RegisterPage() {
   const [form, setForm] = useState({ username: '', email: '', password: '', confirm: '' });
   const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const { register } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,27 +21,10 @@ export default function RegisterPage() {
     setLoading(true);
     
     try {
-      const response = await fetch('https://studyhub-siol.onrender.com/api/auth/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          username: form.username,
-          email: form.email,
-          password: form.password
-        })
-      });
-      
-      const data = await response.json();
-      if (data.success) {
-        localStorage.setItem('studyhub_token', data.token);
-        localStorage.setItem('studyhub_user', JSON.stringify(data.user));
-        toast.success('Welcome to StudyHub!');
-        navigate('/dashboard');
-      } else {
-        toast.error(data.message || 'Registration failed');
-      }
+      await register(form.username, form.email, form.password);
+      navigate('/dashboard');
     } catch (error) {
-      toast.error('Connection error - please try again');
+      toast.error(error.response?.data?.message || error.message || 'Connection error - please try again');
     }
     
     setLoading(false);
