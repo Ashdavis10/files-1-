@@ -113,6 +113,24 @@ router.delete('/:id/leave', protect, async (req, res) => {
   }
 });
 
+// @DELETE /api/rooms/:id/disband - Disband a room (creator only)
+router.delete('/:id/disband', protect, async (req, res) => {
+  try {
+    const room = await Room.findById(req.params.id);
+    if (!room) return res.status(404).json({ success: false, message: 'Room not found' });
+    
+    // Check if the user is the creator
+    if (room.creator.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ success: false, message: 'Only the creator can disband this room' });
+    }
+    
+    await Room.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: 'Room disbanded successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Error disbanding room' });
+  }
+});
+
 // @GET /api/rooms/my/rooms - Get user's rooms
 router.get('/my/rooms', protect, async (req, res) => {
   try {

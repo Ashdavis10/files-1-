@@ -50,6 +50,23 @@ export default function ProfilePage() {
     } finally { setSaving(false); }
   };
 
+  const handleAvatarUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append('avatar', file);
+    
+    try {
+      const { data } = await api.post('/users/avatar', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      updateUser(data.user);
+      toast.success('Profile picture updated!');
+    } catch {
+      toast.error('Failed to upload profile picture');
+    }
+  };
+
   const handlePrefSave = async () => {
     try {
       await updatePreferences(prefForm);
@@ -88,9 +105,19 @@ export default function ProfilePage() {
           <div className="profile-left">
             {/* Profile card */}
             <div className="card profile-card">
-              <div className="profile-avatar-big">
-                {user?.username?.slice(0, 2).toUpperCase()}
+              <div className="profile-avatar-big" style={{ position: 'relative', overflow: 'hidden' }}>
+                {user?.avatar ? (
+                  <img src={user.avatar.startsWith('http') ? user.avatar : `${process.env.REACT_APP_API_URL || 'https://studyhub-siol.onrender.com'}`.replace('/api', '') + user.avatar} alt="avatar" style={{width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%'}} />
+                ) : (
+                  user?.username?.slice(0, 2).toUpperCase()
+                )}
+                {editing && (
+                  <input type="file" accept="image/*" onChange={handleAvatarUpload} 
+                    style={{ position: 'absolute', inset: 0, opacity: 0, cursor: 'pointer' }}
+                    title="Click to upload new profile picture" />
+                )}
               </div>
+              {editing && <p style={{fontSize: 10, textAlign: 'center', color: 'var(--text-muted)', marginTop: 4}}>Click avatar to change</p>}
               {editing ? (
                 <div className="profile-edit-form">
                   <div className="form-group">

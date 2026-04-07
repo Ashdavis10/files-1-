@@ -3,6 +3,36 @@ const userRouter = express.Router();
 const leaderboardRouter = express.Router();
 const User = require('../models/User');
 const { protect } = require('../middleware/auth');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+
+// Initialise uploads directory
+const uploadDir = path.join(__dirname, '..', 'uploads');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// Set up Multer
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, uploadDir);
+  },
+  filename: function(req, file, cb) {
+    cb(null, `${req.user._id}-${Date.now()}${path.extname(file.originalname)}`);
+  }
+});
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
+  fileFilter: function(req, file, cb) {
+    if (file.mimetype.startsWith('image/')) {
+      cb(null, true);
+    } else {
+      cb(new Error('Not an image! Please upload an image.'), false);
+    }
+  }
+});
 
 // Users routes
 // @PUT /api/users/profile - Update profile
@@ -20,6 +50,28 @@ userRouter.put('/profile', protect, async (req, res) => {
   } catch (error) {
     if (error.code === 11000) return res.status(400).json({ success: false, message: 'Username already taken' });
     res.status(500).json({ success: false, message: 'Error updating profile' });
+  }
+});
+
+// @POST /api/users/avatar - Upload an avatar
+userRouter.post('/avatar', protect, upload.single('avatar'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'Please upload a file' });
+    }
+    
+    // Convert to URL-friendly path
+    const avatarUrl = `/uploads/${req.file.filename}`;
+    
+    const user = await User.findByIdAndUpdate(
+      req.user._id,
+      { avatar: avatarUrl },
+      { new: true }
+    );
+    
+    res.json({ success: true, avatarUrl, user });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message || 'Error uploading avatar' });
   }
 });
 

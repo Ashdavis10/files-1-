@@ -69,7 +69,7 @@ export default function LoginPage() {
               </button>
             </div>
             <div style={{ textAlign: 'right', marginTop: '4px' }}>
-              <Link to="#" className="text-xs text-muted">Forgot password?</Link>
+              <Link to="/forgot-password" className="text-xs text-muted">Forgot password?</Link>
             </div>
           </div>
 

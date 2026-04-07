@@ -99,6 +99,18 @@ export default function StudyRoomPage() {
     }
   };
 
+  const handleDisband = async () => {
+    if (!window.confirm('Are you sure you want to disband this room completely? This cannot be undone.')) return;
+    try {
+      await api.delete(`/rooms/${id}/disband`);
+      leaveRoom(id);
+      navigate('/rooms');
+      toast.success('Room disbanded successfully');
+    } catch {
+      toast.error('Failed to disband room');
+    }
+  };
+
   if (loading) return (
     <AppLayout>
       <div className="loading-screen" style={{ minHeight: '400px' }}>
@@ -128,6 +140,11 @@ export default function StudyRoomPage() {
             </div>
           </div>
           <div className="flex gap-2" style={{ marginLeft: 'auto' }}>
+            {room.creator?._id === user._id && (
+              <button className="btn btn-sm" onClick={handleDisband} style={{ background: 'transparent', border: '1px solid var(--danger)', color: 'var(--danger)' }}>
+                <X size={14} /> Disband
+              </button>
+            )}
             <button className="btn btn-secondary btn-sm" onClick={() => navigate('/pomodoro')}>
               <Timer size={14} /> Timer
             </button>
