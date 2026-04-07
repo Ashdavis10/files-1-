@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, ArrowRight, BookOpen, Users, Zap } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import toast from 'react-hot-toast';
 import '../styles/AuthPages.css';
 
@@ -39,90 +39,58 @@ export default function LoginPage() {
 
   return (
     <div className="auth-page">
-      <div className="auth-background">
-        <div className="floating-icons">
-          <BookOpen className="float-icon" style={{ left: '10%', animationDelay: '0s' }} />
-          <Users className="float-icon" style={{ left: '30%', animationDelay: '1s' }} />
-          <Zap className="float-icon" style={{ left: '50%', animationDelay: '2s' }} />
-          <BookOpen className="float-icon" style={{ left: '70%', animationDelay: '3s' }} />
-          <Users className="float-icon" style={{ left: '90%', animationDelay: '4s' }} />
-        </div>
-      </div>
-      
-      <div className="auth-container">
-        <div className="auth-card">
-          <div className="auth-header">
-            <div className="auth-logo">
-              <span>📚</span>
-              <span>StudyHub</span>
-            </div>
-            <h2>Welcome Back</h2>
-            <p>Continue your learning journey with StudyHub</p>
-          </div>
-          
-          <form onSubmit={handleSubmit} className="auth-form">
-            <div className="form-group">
-              <Mail className="form-icon" />
+      <div className="auth-glow" />
+      <div className="auth-card">
+        <Link to="/" className="auth-back">← Back to home</Link>
+        <div className="auth-logo">📚</div>
+        <h1 className="auth-title">Welcome back</h1>
+        <p className="auth-subtitle">Sign in to continue studying</p>
+
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label className="form-label">Email</label>
+            <div className="input-wrapper">
+              <Mail size={16} className="input-icon" />
               <input
                 type="email"
-                placeholder="Enter your email"
+                className="form-input padded-input"
+                placeholder="you@example.com"
                 value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                required
+                onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
               />
             </div>
-            
-            <div className="form-group">
-              <Lock className="form-icon" />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label">Password</label>
+            <div className="input-wrapper">
+              <Lock size={16} className="input-icon" />
               <input
                 type={showPass ? 'text' : 'password'}
-                placeholder="Enter your password"
+                className="form-input padded-input padded-right"
+                placeholder="Your password"
                 value={form.password}
-                onChange={(e) => setForm({ ...form, password: e.target.value })}
-                required
+                onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
               />
-              <button
-                type="button"
-                className="password-toggle"
-                onClick={() => setShowPass(!showPass)}
-              >
-                {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
+              <button type="button" className="input-toggle" onClick={() => setShowPass(p => !p)}>
+                {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
             </div>
-            
-            <button type="submit" className="auth-btn primary" disabled={loading}>
-              {loading ? 'Signing in...' : 'Sign In to StudyHub'}
-              <ArrowRight size={18} />
-            </button>
-          </form>
-          
-          <div className="auth-divider">
-            <span>OR</span>
           </div>
-          
-          <div className="auth-footer">
-            <p>New to StudyHub? <Link to="/register">Create your account</Link></p>
-            <p><Link to="/forgot-password">Forgot your password?</Link></p>
-          </div>
+
+          <button type="submit" className="btn btn-primary w-full" disabled={loading}>
+            {loading ? 'Signing in...' : (<>Sign in <ArrowRight size={16} /></>)}
+          </button>
+        </form>
+
+        <div className="auth-demo">
+          <p className="text-muted text-sm text-center">Demo credentials:</p>
+          <code className="auth-demo-code">demo@studyhub.com / demo1234</code>
         </div>
-        
-        <div className="auth-features">
-          <h3>Why StudyHub?</h3>
-          <div className="feature-list">
-            <div className="feature-item">
-              <Users size={20} />
-              <span>Study with friends in real-time</span>
-            </div>
-            <div className="feature-item">
-              <Zap size={20} />
-              <span>Track your progress with analytics</span>
-            </div>
-            <div className="feature-item">
-              <BookOpen size={20} />
-              <span>Access shared notes and resources</span>
-            </div>
-          </div>
-        </div>
+
+        <p className="auth-switch">
+          Don't have an account? <Link to="/register">Create one</Link>
+        </p>
       </div>
     </div>
   );
