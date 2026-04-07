@@ -9,9 +9,11 @@ import {
   LineElement, PointElement, Title, Tooltip, Legend, Filler, ArcElement
 } from 'chart.js';
 import { Bar, Line, Doughnut } from 'react-chartjs-2';
+import AppLayout from '../components/Layout/AppLayout';
+import { useAuth } from '../context/AuthContext';
 import api from '../api';
 import toast from 'react-hot-toast';
-import '../styles/DashboardPage.css';
+import './DashboardPage.css';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler, ArcElement);
 
@@ -33,58 +35,32 @@ const chartDefaults = {
 };
 
 export default function DashboardPage() {
+  const { user, updateUser } = useAuth();
   const navigate = useNavigate();
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('studyhub_user')) || {});
-  const [loading, setLoading] = useState(true);
-  const [activeSession, setActiveSession] = useState(null);
   const [analytics, setAnalytics] = useState(null);
   const [sessions, setSessions] = useState([]);
+  const [activeSession, setActiveSession] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [newBadges, setNewBadges] = useState([]);
 
   useEffect(() => {
-    loadDashboardData();
+    loadData();
     // Check for active session
     const savedSession = localStorage.getItem('active_session');
     if (savedSession) setActiveSession(JSON.parse(savedSession));
   }, []);
 
-  const loadDashboardData = async () => {
+  const loadData = async () => {
     try {
-      const token = localStorage.getItem('studyhub_token');
-      if (!token) {
-        navigate('/login');
-        return;
-      }
-
-      // Load user data
-      const userResponse = await fetch('https://studyhub-siol.onrender.com/api/auth/me', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const userData = await userResponse.json();
-      if (userData.success) {
-        setUser(userData.user);
-        localStorage.setItem('studyhub_user', JSON.stringify(userData.user));
-      }
-
-      // Load dashboard data
       const [analyticsRes, sessionsRes] = await Promise.all([
-        fetch('https://studyhub-siol.onrender.com/api/sessions/analytics?days=14', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        }),
-        fetch('https://studyhub-siol.onrender.com/api/sessions/history?limit=5', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        })
+        api.get('/sessions/analytics?days=14'),
+        api.get('/sessions/history?limit=5')
       ]);
-      
-      const analyticsData = await analyticsRes.json();
-      const sessionsData = await sessionsRes.json();
-      
-      setAnalytics(analyticsData.analytics || {});
-      setSessions(sessionsData.sessions || []);
-
-      setLoading(false);
-    } catch (error) {
-      console.error('Dashboard error:', error);
+      setAnalytics(analyticsRes.data.analytics);
+      setSessions(sessionsRes.data.sessions);
+    } catch (err) {
+      console.error('Failed to load dashboard data');
+    } finally {
       setLoading(false);
     }
   };
@@ -106,13 +82,13 @@ export default function DashboardPage() {
       const { data } = await api.put(`/sessions/${activeSession._id}/end`, { productivity: 4 });
       setActiveSession(null);
       localStorage.removeItem('active_session');
-      setUser(data.userStats);
+      updateUser(data.userStats);
       if (data.newBadges?.length > 0) {
         setNewBadges(data.newBadges);
         data.newBadges.forEach(b => toast.success(`🏆 Badge earned: ${b.name}!`, { duration: 5000 }));
       }
       toast.success(`Session complete! ${data.session.duration} minutes studied 🎉`);
-      loadDashboardData();
+      loadData();
     } catch (err) {
       toast.error('Failed to end session');
     }
@@ -152,9 +128,10 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="dashboard">
-      {/* Header */}
-      <div className="page-header">
+    <AppLayout>
+      <div className="dashboard">
+        {/* Header */}
+        <div className="page-header">
           <div>
             <h1 className="page-title">
               Good {new Date().getHours() < 12 ? 'morning' : new Date().getHours() < 17 ? 'afternoon' : 'evening'}, {user?.username} 👋
@@ -369,5 +346,6 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+    </AppLayout>
   );
 }

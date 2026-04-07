@@ -4,7 +4,7 @@ import AppLayout from '../components/Layout/AppLayout';
 import { useAuth } from '../context/AuthContext';
 import api from '../api';
 import toast from 'react-hot-toast';
-import '../styles/PomodoroPage.css';
+import './PomodoroPage.css';
 
 const MODES = {
   work: { label: 'Focus', color: '#7c6aff', emoji: '🎯' },
