@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import '../styles/AuthPages.css';
 
 export default function RegisterPage() {
-  const { register } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ username: '', email: '', password: '', confirm: '' });
   const [showPass, setShowPass] = useState(false);
@@ -17,108 +15,87 @@ export default function RegisterPage() {
     if (!form.username || !form.email || !form.password) return toast.error('Please fill in all fields');
     if (form.password !== form.confirm) return toast.error('Passwords do not match');
     if (form.password.length < 6) return toast.error('Password must be at least 6 characters');
+    
     setLoading(true);
-    try {
-      await register(form.username, form.email, form.password);
+    
+    // Simulate registration for now
+    setTimeout(() => {
+      toast.success('Account created! (Demo mode)');
       navigate('/dashboard');
-    } catch (err) {
-      toast.error(err.message || 'Registration failed');
-    } finally {
       setLoading(false);
-    }
+    }, 1000);
   };
 
-  const strength = form.password.length === 0 ? 0 :
-    form.password.length < 6 ? 1 : form.password.length < 10 ? 2 : 3;
-
   return (
-    <div className="auth-page">
-      <div className="auth-glow" />
+    <div className="auth-container">
       <div className="auth-card">
-        <Link to="/" className="auth-back">← Back to home</Link>
-        <div className="auth-logo">📚</div>
-        <h1 className="auth-title">Create account</h1>
-        <p className="auth-subtitle">Join the study community</p>
-
-        <form className="auth-form" onSubmit={handleSubmit}>
+        <div className="auth-header">
+          <div className="auth-logo">📚</div>
+          <h2>Create account</h2>
+          <p>Join the study community today</p>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label className="form-label">Username</label>
-            <div className="input-wrapper">
-              <User size={16} className="input-icon" />
-              <input type="text" className="form-input padded-input"
-                placeholder="studymaster99"
-                value={form.username}
-                onChange={e => setForm(p => ({ ...p, username: e.target.value }))}
-              />
-            </div>
+            <User size={20} />
+            <input
+              type="text"
+              placeholder="Username"
+              value={form.username}
+              onChange={(e) => setForm({ ...form, username: e.target.value })}
+              required
+            />
           </div>
-
+          
           <div className="form-group">
-            <label className="form-label">Email</label>
-            <div className="input-wrapper">
-              <Mail size={16} className="input-icon" />
-              <input type="email" className="form-input padded-input"
-                placeholder="you@example.com"
-                value={form.email}
-                onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-              />
-            </div>
+            <Mail size={20} />
+            <input
+              type="email"
+              placeholder="Email address"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              required
+            />
           </div>
-
+          
           <div className="form-group">
-            <label className="form-label">Password</label>
-            <div className="input-wrapper">
-              <Lock size={16} className="input-icon" />
-              <input
-                type={showPass ? 'text' : 'password'}
-                className="form-input padded-input padded-right"
-                placeholder="Minimum 6 characters"
-                value={form.password}
-                onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
-              />
-              <button type="button" className="input-toggle" onClick={() => setShowPass(p => !p)}>
-                {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
-            {form.password && (
-              <div className="password-strength">
-                <div className="strength-bars">
-                  {[1, 2, 3].map(i => (
-                    <div key={i} className={`strength-bar ${strength >= i ? `level-${strength}` : ''}`} />
-                  ))}
-                </div>
-                <span className={`strength-label level-${strength}`}>
-                  {['', 'Weak', 'Good', 'Strong'][strength]}
-                </span>
-              </div>
-            )}
+            <Lock size={20} />
+            <input
+              type={showPass ? 'text' : 'password'}
+              placeholder="Password"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              required
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPass(!showPass)}
+            >
+              {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
-
+          
           <div className="form-group">
-            <label className="form-label">Confirm Password</label>
-            <div className="input-wrapper">
-              <Lock size={16} className="input-icon" />
-              <input
-                type="password"
-                className="form-input padded-input"
-                placeholder="Repeat password"
-                value={form.confirm}
-                onChange={e => setForm(p => ({ ...p, confirm: e.target.value }))}
-              />
-            </div>
-            {form.confirm && form.password !== form.confirm && (
-              <span style={{ fontSize: '12px', color: 'var(--danger)' }}>Passwords don't match</span>
-            )}
+            <Lock size={20} />
+            <input
+              type={showPass ? 'text' : 'password'}
+              placeholder="Confirm password"
+              value={form.confirm}
+              onChange={(e) => setForm({ ...form, confirm: e.target.value })}
+              required
+            />
           </div>
-
-          <button type="submit" className="btn btn-primary w-full" disabled={loading}>
-            {loading ? 'Creating account...' : (<>Create account <ArrowRight size={16} /></>)}
+          
+          <button type="submit" className="auth-btn" disabled={loading}>
+            {loading ? 'Creating account...' : 'Create account'}
+            <ArrowRight size={18} />
           </button>
         </form>
-
-        <p className="auth-switch">
-          Already have an account? <Link to="/login">Sign in</Link>
-        </p>
+        
+        <div className="auth-footer">
+          <p>Already have an account? <Link to="/login">Sign in</Link></p>
+        </div>
       </div>
     </div>
   );

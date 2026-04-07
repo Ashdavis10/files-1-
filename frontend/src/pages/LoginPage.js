@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, Eye, EyeOff, ArrowRight } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
 import '../styles/AuthPages.css';
 
 export default function LoginPage() {
-  const { login } = useAuth();
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '' });
   const [showPass, setShowPass] = useState(false);
@@ -16,70 +14,63 @@ export default function LoginPage() {
     e.preventDefault();
     if (!form.email || !form.password) return toast.error('Please fill in all fields');
     setLoading(true);
-    try {
-      await login(form.email, form.password);
+    
+    // Simulate login for now
+    setTimeout(() => {
+      toast.success('Login successful! (Demo mode)');
       navigate('/dashboard');
-    } catch (err) {
-      toast.error(err.message || 'Login failed');
-    } finally {
       setLoading(false);
-    }
+    }, 1000);
   };
 
   return (
-    <div className="auth-page">
-      <div className="auth-glow" />
+    <div className="auth-container">
       <div className="auth-card">
-        <Link to="/" className="auth-back">← Back to home</Link>
-        <div className="auth-logo">📚</div>
-        <h1 className="auth-title">Welcome back</h1>
-        <p className="auth-subtitle">Sign in to continue studying</p>
-
-        <form className="auth-form" onSubmit={handleSubmit}>
+        <div className="auth-header">
+          <div className="auth-logo">📚</div>
+          <h2>Welcome back</h2>
+          <p>Sign in to continue your study journey</p>
+        </div>
+        
+        <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label className="form-label">Email</label>
-            <div className="input-wrapper">
-              <Mail size={16} className="input-icon" />
-              <input
-                type="email"
-                className="form-input padded-input"
-                placeholder="you@example.com"
-                value={form.email}
-                onChange={e => setForm(p => ({ ...p, email: e.target.value }))}
-              />
-            </div>
+            <Mail size={20} />
+            <input
+              type="email"
+              placeholder="Email address"
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
+              required
+            />
           </div>
-
+          
           <div className="form-group">
-            <label className="form-label">Password</label>
-            <div className="input-wrapper">
-              <Lock size={16} className="input-icon" />
-              <input
-                type={showPass ? 'text' : 'password'}
-                className="form-input padded-input padded-right"
-                placeholder="Your password"
-                value={form.password}
-                onChange={e => setForm(p => ({ ...p, password: e.target.value }))}
-              />
-              <button type="button" className="input-toggle" onClick={() => setShowPass(p => !p)}>
-                {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
+            <Lock size={20} />
+            <input
+              type={showPass ? 'text' : 'password'}
+              placeholder="Password"
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              required
+            />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPass(!showPass)}
+            >
+              {showPass ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
-
-          <button type="submit" className="btn btn-primary w-full" disabled={loading}>
-            {loading ? 'Signing in...' : (<>Sign in <ArrowRight size={16} /></>)}
+          
+          <button type="submit" className="auth-btn" disabled={loading}>
+            {loading ? 'Signing in...' : 'Sign in'}
+            <ArrowRight size={18} />
           </button>
         </form>
-
-        <div className="auth-demo">
-          <p className="text-muted text-sm text-center">Demo credentials:</p>
-          <code className="auth-demo-code">demo@studyhub.com / demo1234</code>
+        
+        <div className="auth-footer">
+          <p>Don't have an account? <Link to="/register">Sign up</Link></p>
         </div>
-
-        <p className="auth-switch">
-          Don't have an account? <Link to="/register">Create one</Link>
-        </p>
       </div>
     </div>
   );
