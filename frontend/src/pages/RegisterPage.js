@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import toast from 'react-hot-toast';
-import './AuthPages.css';
+import '../styles/AuthPages.css';
 
 export default function RegisterPage() {
   const { register } = useAuth();

@@ -4,7 +4,7 @@ import { Plus, Search, Users, Lock, Unlock, ArrowRight } from 'lucide-react';
 import AppLayout from '../components/Layout/AppLayout';
 import api from '../utils/api';
 import toast from 'react-hot-toast';
-import './RoomsPage.css';
+import '../styles/RoomsPage.css';
 
 const SUBJECTS = ['All', 'Mathematics', 'Science', 'Programming', 'Languages', 'History', 'Arts', 'Business', 'Medicine', 'Law', 'Engineering', 'Other'];
 const SUBJECT_COLORS = {
