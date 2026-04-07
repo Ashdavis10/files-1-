@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Users, Timer, BookOpen, Trophy, ArrowRight, Zap, Shield, BarChart3 } from 'lucide-react';
-import './LandingPage.css';
+import '../styles/LandingPage.css';
 
 const features = [
   { icon: Users, label: 'Study Rooms', desc: 'Join live rooms and collaborate in real-time with Socket.io chat', color: '#7c6aff' },
