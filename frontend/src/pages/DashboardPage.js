@@ -67,7 +67,6 @@ export default function DashboardPage() {
       }
 
       // Load dashboard data
-      const token = localStorage.getItem('studyhub_token');
       const [analyticsRes, sessionsRes] = await Promise.all([
         fetch('https://studyhub-siol.onrender.com/api/sessions/analytics?days=14', {
           headers: { 'Authorization': `Bearer ${token}` }
@@ -107,13 +106,13 @@ export default function DashboardPage() {
       const { data } = await api.put(`/sessions/${activeSession._id}/end`, { productivity: 4 });
       setActiveSession(null);
       localStorage.removeItem('active_session');
-      updateUser(data.userStats);
+      setUser(data.userStats);
       if (data.newBadges?.length > 0) {
         setNewBadges(data.newBadges);
         data.newBadges.forEach(b => toast.success(`🏆 Badge earned: ${b.name}!`, { duration: 5000 }));
       }
       toast.success(`Session complete! ${data.session.duration} minutes studied 🎉`);
-      loadData();
+      loadDashboardData();
     } catch (err) {
       toast.error('Failed to end session');
     }
@@ -370,6 +369,5 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
-    </div>
   );
 }
