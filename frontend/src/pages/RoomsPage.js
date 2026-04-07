@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Plus, Search, Users, Lock, Unlock, ArrowRight } from 'lucide-react';
 import AppLayout from '../components/Layout/AppLayout';
-import api from '../utils/api';
+import api from '../api';
 import toast from 'react-hot-toast';
 import '../styles/RoomsPage.css';
 

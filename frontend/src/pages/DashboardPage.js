@@ -11,7 +11,7 @@ import {
 import { Bar, Line, Doughnut } from 'react-chartjs-2';
 import AppLayout from '../components/Layout/AppLayout';
 import { useAuth } from '../context/AuthContext';
-import api from '../utils/api';
+import api from '../api';
 import toast from 'react-hot-toast';
 import '../styles/DashboardPage.css';
 
