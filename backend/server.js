@@ -19,7 +19,7 @@ app.set('io', io);
 
 // Middleware
 app.use(cors({
-  origin: ['https://your-vercel-app.vercel.app', 'http://localhost:3000'],
+  origin: ['https://1.kfughpl30.asherdavis103_5102s_projects.vercel.app', 'http://localhost:3000'],
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
