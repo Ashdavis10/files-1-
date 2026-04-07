@@ -1,7 +1,7 @@
 // Replace with your Render backend URL
 const API_BASE_URL = 'https://studyhub-siol.onrender.com';
 
-export const api = {
+const api = {
   // Auth endpoints
   register: (userData) => fetch(`${API_BASE_URL}/api/auth/register`, {
     method: 'POST',
@@ -44,3 +44,5 @@ export const api = {
   // Health check
   health: () => fetch(`${API_BASE_URL}/api/health`)
 };
+
+export default api;
