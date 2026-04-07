@@ -25,6 +25,7 @@ export default function LoginPage() {
       const data = await response.json();
       if (data.success) {
         localStorage.setItem('studyhub_token', data.token);
+        localStorage.setItem('studyhub_user', JSON.stringify(data.user));
         toast.success('Welcome back to StudyHub!');
         navigate('/dashboard');
       } else {
