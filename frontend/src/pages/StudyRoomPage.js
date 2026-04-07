@@ -6,7 +6,7 @@ import { useAuth } from '../context/AuthContext';
 import { useSocket } from '../context/SocketContext';
 import api from '../api';
 import toast from 'react-hot-toast';
-import './StudyRoomPage.css';
+import '../styles/StudyRoomPage.css';
 
 export default function StudyRoomPage() {
   const { id } = useParams();

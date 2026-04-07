@@ -3,9 +3,9 @@ import { Edit3, Save, X, Trophy, Flame, Clock, BookOpen, Target } from 'lucide-r
 import AppLayout from '../components/Layout/AppLayout';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
-import api from '../utils/api';
+import api from '../api';
 import toast from 'react-hot-toast';
-import './ProfilePage.css';
+import '../styles/ProfilePage.css';
 
 export default function ProfilePage() {
   const { user, updateUser, updatePreferences } = useAuth();

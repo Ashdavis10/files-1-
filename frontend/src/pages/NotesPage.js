@@ -5,9 +5,9 @@ import {
 } from 'lucide-react';
 import AppLayout from '../components/Layout/AppLayout';
 import { useAuth } from '../context/AuthContext';
-import api from '../utils/api';
+import api from '../api';
 import toast from 'react-hot-toast';
-import './NotesPage.css';
+import '../styles/NotesPage.css';
 
 const TYPE_ICONS = { note: '📝', link: '🔗', file: '📁' };
 const SUBJECTS = ['General', 'Mathematics', 'Science', 'Programming', 'Languages', 'History', 'Arts', 'Business', 'Medicine', 'Law', 'Engineering'];

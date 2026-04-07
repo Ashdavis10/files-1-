@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Play, Pause, RotateCcw, Settings, Coffee, Zap, CheckCircle } from 'lucide-react';
 import AppLayout from '../components/Layout/AppLayout';
 import { useAuth } from '../context/AuthContext';
-import api from '../utils/api';
+import api from '../api';
 import toast from 'react-hot-toast';
-import './PomodoroPage.css';
+import '../styles/PomodoroPage.css';
 
 const MODES = {
   work: { label: 'Focus', color: '#7c6aff', emoji: '🎯' },

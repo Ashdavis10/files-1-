@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Trophy, Flame, Clock, BookOpen, Medal, Crown } from 'lucide-react';
 import AppLayout from '../components/Layout/AppLayout';
 import { useAuth } from '../context/AuthContext';
-import api from '../utils/api';
-import './LeaderboardPage.css';
+import api from '../api';
+import '../styles/LeaderboardPage.css';
 
 const TYPES = [
   { key: 'weekly', label: '📅 This Week', icon: Clock },
