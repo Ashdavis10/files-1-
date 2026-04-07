@@ -13,7 +13,7 @@ import AppLayout from '../components/Layout/AppLayout';
 import { useAuth } from '../context/AuthContext';
 import api from '../api';
 import toast from 'react-hot-toast';
-import './DashboardPage.css';
+import '../styles/DashboardPage.css';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, LineElement, PointElement, Title, Tooltip, Legend, Filler, ArcElement);
 
